@@ -1,2 +1,19 @@
 ---
 # defaults file for customisation
+dashtodock:
+  background-opacity: 
+    - "0.80000000000000004"
+  dash-max-icon-size:
+  - "48"
+  dock-fixed:
+  - "false"
+  dock-position:
+  - "'BOTTOM'"
+  extend-height: 
+  - "false"
+  height-fraction:
+  - "0.90000000000000002"
+  preferred-monitor:
+  - "-2"
+  preferred-monitor-by-connector:
+  - "'primary'"

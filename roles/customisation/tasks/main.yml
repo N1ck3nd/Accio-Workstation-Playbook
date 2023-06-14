@@ -4,7 +4,7 @@
 # SET DEFAULT SHELL TO ZSH
 - name: Set loginshell
   become: true
-  #shell: "chsh -s /usr/bin/zsh vagrant"
+  # shell: "chsh -s /usr/bin/zsh vagrant"
   shell: "chsh -s /usr/bin/zsh {{ lookup('env', 'USER') }}"
   tags: [zsh]
 
