@@ -12,6 +12,7 @@ sudo apt-get install $APT_PACKAGES -y >/dev/null 2>&1
 python3 -m pip install $PIP_DEPENDENCIES > /dev/null 2>&1
 git clone $REPO_URL $ANSIBLE_FOLDER_PATH >/dev/null 2>&1
 
+sudo echo ''
 ## echo 'PREPARE [Installing requirements with Ansible-Galaxy.] ********'
 ## echo ''
 ## ansible-galaxy install -r $FOLDER_PATH/requirements.yml >/dev/null 2>&1
