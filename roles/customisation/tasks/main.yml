@@ -52,6 +52,7 @@
   loop: "{{ lookup('dict', custom_gnome_terminal) }}"
 
 # Custom Keybindings
+# TODO: CREATE PATH IF IT DOES NOT EXIST
 - name: Configure custom keybinding for terminal
   community.general.dconf:
     key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/{{ item.key }}"
