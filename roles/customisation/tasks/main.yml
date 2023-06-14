@@ -1,0 +1,38 @@
+---
+# tasks file for customisation
+
+# SET DEFAULT SHELL TO ZSH
+- name: Set loginshell
+  become: true
+  #shell: "chsh -s /usr/bin/zsh vagrant"
+  shell: "chsh -s /usr/bin/zsh {{ lookup('env', 'USER') }}"
+  tags: [zsh]
+
+# Wallpaper
+- name: Copy wallpaper
+  become: true
+  ansible.builtin.copy:
+    src: "files/wallpaper.jpg"
+    dest: "/usr/share/backgrounds/custom-wallpaper.jpg"
+    mode: '0744'
+
+- name: Set Background
+  community.general.dconf:
+    key: "/org/gnome/desktop/background/picture-uri"
+    value: "'file:///usr/share/backgrounds/custom-wallpaper.jpg'"
+    state: present
+
+# Dash to Dock
+- name: Configure Dash to Dock
+  community.general.dconf:
+    key: "/org/gnome/shell/extensions/dash-to-dock/{{ item.key }}"
+    value: "{{ item.value[0] }}"
+    state: present
+  loop: "{{ lookup('dict', dashtodock) }}"
+
+# Extensions
+
+# Requires user input - UAC
+# ./gext install sound-output-device-chooser@kgshank.net
+# ./gext install gestureImprovements@gestures
+# ./gext install auto-move-windows@gnome-shell-extensions.gcampax.github.com

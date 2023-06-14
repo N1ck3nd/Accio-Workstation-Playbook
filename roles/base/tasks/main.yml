@@ -1,0 +1,345 @@
+---
+# tasks file for base
+
+# INSTALL APT PACKAGES
+- name: Ensure package cache is up-to-date
+  become: true
+  ansible.builtin.apt:
+    update_cache: yes
+
+- name: Update all packages to their latest version
+  become: true
+  ansible.builtin.apt:
+    name: "*"
+    state: latest
+
+- name: Install Essential software using APT
+  become: true
+  ansible.builtin.apt:
+    name: "{{ item }}"
+    state: present
+  with_items: "{{ essential_apt_packages }}"
+
+- name: Install Administration software using APT
+  become: true
+  ansible.builtin.apt:
+    name: "{{ item }}"
+    state: present
+  with_items: "{{ administration_apt_packages }}"
+
+- name: Install GNOME software using APT
+  become: true
+  ansible.builtin.apt:
+    name: "{{ item }}"
+    state: present
+  with_items: "{{ gnome_apt_packages }}"
+
+# INSTALL PIPX PACKAGES
+
+- name: Install Python tools using pipx
+  community.general.pipx:
+    name: "{{ item }}"
+    state: present
+  with_items: "{{ general_pipx_packages }}"
+
+- name: Install gnome-extensions-cli using pipx
+  community.general.pipx:
+    name: gnome-extensions-cli
+    system_site_packages: true
+
+# community.general.github_release depends on github3.py
+
+- name: Install github3.py dependency
+  ansible.builtin.pip:
+    name: github3.py
+
+# INSTALL OTHER APPLICATIONS
+
+# ULAUNCHER
+- name: Get Ulauncher latest tag
+  community.general.github_release:
+    user: Ulauncher
+    repo: Ulauncher
+    action: latest_release
+  register: Ulauncher_Latest
+
+- name: Download Ulauncher.deb 
+  ansible.builtin.get_url:
+    url: "https://github.com/Ulauncher/Ulauncher/releases/download/{{ Ulauncher_Latest['tag'] }}/ulauncher_{{ Ulauncher_Latest['tag'] | regex_replace('^v','') }}_all.deb"
+    dest: /tmp/ulauncher.deb
+    force: false
+
+- name: Install Ulauncher
+  become: true
+  ansible.builtin.apt:
+    deb: /tmp/ulauncher.deb
+    state: present
+
+# APPIMAGELAUNCHER
+
+- name: Download AppImageLauncher installer 
+  ansible.builtin.get_url:
+    url: "https://github.com/TheAssassin/AppImageLauncher/releases/download/v2.2.0/appimagelauncher_2.2.0-travis995.0f91801.bionic_amd64.deb"
+    dest: /tmp/appimagelauncher.deb
+    force: false
+
+- name: Install AppImageLauncher
+  become: true
+  ansible.builtin.apt:
+    deb: /tmp/appimagelauncher.deb
+    state: present
+
+# DISCORD
+- name: Download Discord installer 
+  ansible.builtin.get_url:
+    url: "https://discord.com/api/download?platform=linux&format=deb"
+    dest: /tmp/discord.deb
+    force: false
+
+- name: Install Discord
+  become: true
+  ansible.builtin.apt:
+    deb: /tmp/discord.deb
+    state: present
+
+# BITWARDEN
+- name: Grab Bitwarden latest binaries
+  ansible.builtin.get_url:
+    url: "https://vault.bitwarden.com/download/?app=desktop&platform=linux&variant=appimage"
+    dest: /tmp/bitwarden.appimage
+    force: false
+
+# OBSIDIAN
+- name: Get Obsidian latest tag
+  community.general.github_release:
+    user: obsidianmd
+    repo: obsidian-releases
+    action: latest_release
+  register: Obsidian_Latest
+
+- name: Download Obsidian 
+  ansible.builtin.get_url:
+    url: "https://github.com/obsidianmd/obsidian-releases/releases/download/{{ Obsidian_Latest['tag'] }}/Obsidian-{{ Obsidian_Latest['tag'] | regex_replace('^v','') }}.AppImage"
+    dest: /tmp/obsidian.appimage
+    force: false
+
+# CRYPTOMATER
+
+- name: Download Cryptomater
+  ansible.builtin.get_url:
+    url: "https://cryptomator.org/downloads/linux/thanks/"
+    dest: /tmp/cryptomater.appimage
+    force: false
+
+# Integrate AppImages
+- name: Integrate AppImages
+  ansible.builtin.command: ail-cli integrate /tmp/cryptomater.appimage
+
+# CLOUDFLARE WARP CLIENT
+- name: Add Cloudflare Client apt repository key.
+  become: true
+  ansible.builtin.get_url:
+    url: "https://pkg.cloudflareclient.com/pubkey.gpg"
+    dest: /etc/apt/trusted.gpg.d/cloudflare-warp-archive-keyring.asc
+    mode: '0644'
+    force: false
+
+- name: Add Cloudflare Warp Client repository to apt sources
+  become: true
+  ansible.builtin.apt_repository:
+    repo: "deb [arch=amd64 signed-by=/etc/apt/trusted.gpg.d/cloudflare-warp-archive-keyring.asc] https://pkg.cloudflareclient.com/ {{ ansible_distribution_release }} main"
+    state: present
+    update_cache: true
+
+- name: Install Cloudflare Warp Client
+  become: true
+  ansible.builtin.apt:
+    name: cloudflare-warp
+    state: present
+  
+# SUBLIME-TEXT
+- name: Add Sublime-Text apt repository key.
+  become: true
+  ansible.builtin.get_url:
+    url: "https://download.sublimetext.com/sublimehq-pub.gpg"
+    dest: /etc/apt/trusted.gpg.d/sublimehq-archive.asc
+    mode: '0644'
+    force: false
+
+- name: Add Sublime-Text repository to apt sources
+  become: true
+  ansible.builtin.apt_repository:
+    repo: "deb https://download.sublimetext.com/ apt/stable/"
+    state: present
+    update_cache: true
+
+- name: Install Sublime-Text
+  become: true
+  ansible.builtin.apt:
+    name: sublime-text
+    state: present
+
+# RPI-IMAGER
+- name: Download Raspberry Pi Imager installer 
+  ansible.builtin.get_url:
+    url: "https://downloads.raspberrypi.org/imager/imager_latest_amd64.deb"
+    dest: /tmp/rpi-imager.deb
+    force: false
+
+- name: Install Raspberry Pi Imager
+  become: true
+  ansible.builtin.apt:
+    deb: /tmp/rpi-imager.deb
+    state: present
+
+# MEGASYNC
+- name: Download Megasync installer 
+  ansible.builtin.get_url:
+    url: "https://mega.nz/linux/repo/x{{ ansible_distribution }}_{{ ansible_distribution_version }}/amd64/megasync-x{{ ansible_distribution }}_{{ ansible_distribution_version }}_amd64.deb"
+    dest: /tmp/megasync.deb
+    force: false
+
+- name: Install Megasync
+  become: true
+  ansible.builtin.apt:
+    deb: /tmp/megasync.deb
+    state: present
+
+# POWERSHELL
+- name: Add Powershell repository key.
+  become: true
+  ansible.builtin.get_url:
+    url: "https://packages.microsoft.com/keys/microsoft.asc"
+    dest: /etc/apt/trusted.gpg.d/microsoft.asc
+    mode: '0644'
+    force: false
+
+- name: Add Powershell repository to apt sources
+  become: true
+  ansible.builtin.apt_repository:
+    repo: "deb [arch=amd64,armhf,arm64 signed-by=/etc/apt/trusted.gpg.d/microsoft.asc] https://packages.microsoft.com/{{ ansible_distribution | lower }}/{{ ansible_distribution_version }}/prod {{ ansible_distribution_release }} main"
+    state: present
+    update_cache: true
+
+- name: Install Powershell
+  become: true
+  ansible.builtin.apt:
+    name: powershell
+    state: present
+
+# GOLANG
+
+- name: Get Go latest tag
+  ansible.builtin.uri:
+    method: GET
+    url: "https://golang.org/VERSION?m=text"
+    return_content: true
+  register: GOLANG_Latest
+  tags:
+    - GO
+
+- name: Download Go installer
+  ansible.builtin.get_url:
+    url: "https://go.dev/dl/{{ GOLANG_Latest.content }}.linux-amd64.tar.gz"
+    dest: /tmp/go.tar.gz
+    force: false
+  tags:
+    - GO
+
+- name: Unarchive Go
+  become: true
+  ansible.builtin.unarchive:
+    src: /tmp/go.tar.gz
+    dest: /usr/local
+    remote_src: yes
+  tags:
+    - GO
+
+# .zshrc: spath+=('/usr/local/go/bin')
+# add go binary path?
+
+# LIBREWOLF
+- name: Add Librewolf apt repository key.
+  become: true
+  ansible.builtin.get_url:
+    url: "https://deb.librewolf.net/pubkey.gpg"
+    dest: /etc/apt/trusted.gpg.d/librewolf-repo.asc
+    mode: '0644'
+    force: true
+
+- name: Add Librewolf repository to apt sources
+  become: true
+  ansible.builtin.apt_repository:
+    repo: "deb [arch=amd64 signed-by=/etc/apt/trusted.gpg.d/librewolf-repo.asc] https://deb.librewolf.net {{ ansible_distribution_release }} main"
+    state: present
+    update_cache: true
+
+- name: Install Librewolf
+  become: true
+  ansible.builtin.apt:
+    name: librewolf
+    state: present
+    update_cache: true
+
+# DISPLAYLINK
+
+# - name: Download DisplayLink installer
+#   ansible.builtin.get_url:
+#     url: "https://www.synaptics.com/sites/default/files/Ubuntu/pool/stable/main/all/synaptics-repository-keyring.deb"
+#     dest: /tmp/synaptics-repository-keyring.deb
+#     force: false
+
+# - name: Install Synaptics apt repository
+#   become: true
+#   ansible.builtin.apt:
+#     deb: /tmp/synaptics-repository-keyring.deb
+#     state: present
+    
+
+# - name: Install DisplayLink driver
+#   become: true
+#   ansible.builtin.apt:
+#     name: displaylink-driver
+#     state: present
+#     update_cache: true
+
+# TABBY
+- name: Get Tabby latest tag
+  community.general.github_release:
+    user: Eugeny
+    repo: tabby
+    action: latest_release
+  register: Tabby_Latest
+
+- name: Download Tabby.deb 
+  ansible.builtin.get_url:
+    url: "https://github.com/Eugeny/tabby/releases/download/{{ Tabby_Latest['tag'] }}/tabby-{{ Tabby_Latest['tag'] | regex_replace('^v','') }}-linux-x64.deb"
+    dest: /tmp/tabby.deb
+    force: false
+
+- name: Install Tabby
+  become: true
+  ansible.builtin.apt:
+    deb: /tmp/tabby.deb
+    state: present
+
+# MATTERMOST
+- name: Get Mattermost latest tag
+  community.general.github_release:
+    user: mattermost
+    repo: desktop
+    action: latest_release
+  register: Mattermost_Latest
+
+- name: Download Mattermost
+  ansible.builtin.get_url:
+    url: "https://github.com/mattermost/desktop/releases/download/{{ Mattermost_Latest['tag'] }}/mattermost-desktop_{{ Mattermost_Latest['tag'] | regex_replace('^v','') }}-1_amd64.deb"
+    dest: /tmp/mattermost.deb
+    force: false
+
+- name: Install Mattermost
+  become: true
+  ansible.builtin.apt:
+    deb: /tmp/mattermost.deb
+    state: present
+
