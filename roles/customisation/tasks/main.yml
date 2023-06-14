@@ -59,6 +59,7 @@
     state: present
   loop: "{{ lookup('dict', custom_keybinding_terminal) }}"
 
+# TODO: remove existing print screen shortcut
 - name: Configure custom keybinding for flameshot
   community.general.dconf:
     key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/{{ item.key }}"
