@@ -17,3 +17,37 @@ dashtodock:
   - "-2"
   preferred-monitor-by-connector:
   - "'primary'"
+
+custom_gnome_terminal:
+  exec:
+  - "'/usr/bin/terminator'"
+  exec-arg:
+  - "'-x'"
+
+gnome_interface_theme:
+  color-scheme:
+  - "'prefer-dark'"                   
+  font-hinting:
+  - "'slight'"                              
+  gtk-theme:
+  - "'Yaru-red-dark'"                 
+  icon-theme:
+  - "'Yaru-red'"                   
+  show-battery-percentage:
+  - "true"
+
+custom_keybinding_terminal:
+  binding:
+  - "'<Super>t'"
+  command:
+  - "'bash /home/n/.config/terminator/term_shortcut.sh'"
+  name:
+  - "'Terminal'"
+
+custom_keybinding_flameshot:
+  binding:
+  - "'Print'"
+  command:
+  - "'flameshot gui'"
+  name:
+  - "'FlameShot'"

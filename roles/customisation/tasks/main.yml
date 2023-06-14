@@ -1,26 +1,30 @@
 ---
 # tasks file for customisation
 
-# SET DEFAULT SHELL TO ZSH
+# INSTALL AND CONFIGURE (OH-MY-)ZSH
+- name: Clone Oh-My-Zsh repository
+  ansible.builtin.git:
+    repo: https://github.com/ohmyzsh/ohmyzsh.git
+    dest: ~/.oh-my-zsh
+    depth: 1
+
+- name: Clone Powerlevel10k repository
+  ansible.builtin.git:
+    repo: https://github.com/romkatv/powerlevel10k.git
+    dest: ~/.oh-my-zsh/custom/themes/powerlevel10k
+    depth: 1
+
+- name: Install zsh-syntax-highlighting plugin
+  ansible.builtin.git:
+    repo: https://github.com/zsh-users/zsh-syntax-highlighting.git
+    dest: ~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting
+
+#SET DEFAULT SHELL TO ZSH
 - name: Set loginshell
   become: true
   # shell: "chsh -s /usr/bin/zsh vagrant"
   shell: "chsh -s /usr/bin/zsh {{ lookup('env', 'USER') }}"
   tags: [zsh]
-
-# Wallpaper
-- name: Copy wallpaper
-  become: true
-  ansible.builtin.copy:
-    src: "files/wallpaper.jpg"
-    dest: "/usr/share/backgrounds/custom-wallpaper.jpg"
-    mode: '0744'
-
-- name: Set Background
-  community.general.dconf:
-    key: "/org/gnome/desktop/background/picture-uri"
-    value: "'file:///usr/share/backgrounds/custom-wallpaper.jpg'"
-    state: present
 
 # Dash to Dock
 - name: Configure Dash to Dock
@@ -29,6 +33,64 @@
     value: "{{ item.value[0] }}"
     state: present
   loop: "{{ lookup('dict', dashtodock) }}"
+
+- name: Set Dock Favourites
+  community.general.dconf:
+    key: "/org/gnome/shell/favorite-apps"
+    value: "['org.gnome.Nautilus.desktop', 'librewolf.desktop']"
+    state: present
+
+# GNOME Terminal
+- name: Configure GNOME terminal
+  community.general.dconf:
+    key: "/org/gnome/desktop/applications/terminal/{{ item.key }}"
+    value: "{{ item.value[0] }}"
+    state: present
+  loop: "{{ lookup('dict', custom_gnome_terminal) }}"
+
+# Custom Keybindings
+- name: Configure custom keybinding for terminal
+  community.general.dconf:
+    key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/{{ item.key }}"
+    value: "{{ item.value[0] }}"
+    state: present
+  loop: "{{ lookup('dict', custom_keybinding_terminal) }}"
+
+- name: Configure custom keybinding for flameshot
+  community.general.dconf:
+    key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/{{ item.key }}"
+    value: "{{ item.value[0] }}"
+    state: present
+  loop: "{{ lookup('dict', custom_keybinding_flameshot) }}"
+
+# Theme
+- name: Download Yaru theme to specified folder
+  become: true
+  ansible.builtin.subversion:
+    repo: "https://github.com/Jannomag/Yaru-Colors/trunk/Themes/Yaru-Red-dark/"
+    dest: /usr/share/themes/Yaru-Red-dark
+
+- name: Set GNOME theme
+  community.general.dconf:
+    key: "/org/gnome/desktop/interface/{{ item.key }}"
+    value: "{{ item.value[0] }}"
+    state: present
+  loop: "{{ lookup('dict', gnome_interface_theme) }}"
+
+# Wallpaper
+- name: Copy wallpaper
+  become: true
+  ansible.builtin.copy:
+    src: "files/wallpaper.jpg"
+    dest: "/usr/share/backgrounds/custom-wallpaper.jpg"
+    mode: '0744'
+    force: true
+
+- name: Set Background
+  community.general.dconf:
+    key: "/org/gnome/desktop/background/picture-uri"
+    value: "'file:///usr/share/backgrounds/custom-wallpaper.jpg'"
+    state: present
 
 # Extensions
 
