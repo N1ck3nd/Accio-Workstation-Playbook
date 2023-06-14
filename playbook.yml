@@ -1,0 +1,7 @@
+---
+- name: Install Workstation
+  hosts: all
+  roles:
+    - base
+    - customisation
+    # - security

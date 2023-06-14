@@ -1,0 +1,73 @@
+---
+# defaults file for base
+essential_apt_packages:
+- ufw
+- gnupg
+- curl
+- wget
+- git
+- python3
+- python3-venv
+- python3-pip
+- python-is-python3
+- libfuse2
+- pipx
+- zsh
+- stow
+- vim
+- whois
+- apt-transport-https
+- ca-certificates
+- xdotool
+- tmux
+- neofetch
+- htop
+- tree
+- p7zip-full
+- unzip
+- unrar
+- evolution
+- pavucontrol
+- automake
+- autoconf
+- autotools-dev
+- ftp
+- net-tools
+# - plocate
+# - docker
+# - docker-compose
+
+administration_apt_packages:
+- ncat
+- nmap
+- openvpn
+- wakeonlan
+- tcpdump
+- samba-common
+- gparted
+- lshw
+- parallel
+- wpasupplicant
+- wireguard
+
+gnome_apt_packages:
+- gnome-shell-extension-manager
+- gnome-shell-extensions
+- network-manager-gnome
+- network-manager-openvpn
+- network-manager-openvpn-gnome
+- wireshark
+- gnome-tweaks
+- torbrowser-launcher
+- libreoffice
+- deluge
+- rdesktop
+- remmina
+- terminator
+- flameshot
+- chromium-browser
+
+general_pipx_packages:
+- updog
+- html2text
+- youtube_dl
