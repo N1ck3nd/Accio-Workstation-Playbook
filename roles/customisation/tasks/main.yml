@@ -68,6 +68,11 @@
     state: present
   loop: "{{ lookup('dict', custom_keybinding_flameshot) }}"
 
+- name: enable custom keybindings
+  dconf:
+    key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings"
+    value: "['/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/']"
+
 # Theme
 - name: Download Yaru theme to specified folder
   become: true
