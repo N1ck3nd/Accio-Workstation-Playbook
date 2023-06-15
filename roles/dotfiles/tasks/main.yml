@@ -39,7 +39,5 @@
   args:
     chdir: "{{ lookup('ansible.builtin.env', 'HOME') }}/.dotfiles"
 
-# Change permission SSH keys in .ssh
-
-- name: Ensure directories are 0755
+- name: Fix SSH key permissions
   command: find {{ lookup('ansible.builtin.env', 'HOME') }}/.dotfiles/ssh/.ssh/ -type f -exec chmod 0600 {} \;
