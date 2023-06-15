@@ -23,11 +23,11 @@
     force: true
 
 #SET DEFAULT SHELL TO ZSH
-# - name: Set loginshell
-#   become: true
-#   # shell: "chsh -s /usr/bin/zsh vagrant"
-#   shell: "chsh -s /usr/bin/zsh {{ lookup('env', 'USER') }}"
-#   tags: [zsh]
+- name: Set loginshell
+  become: true
+  # shell: "chsh -s /usr/bin/zsh vagrant"
+  shell: "chsh -s /usr/bin/zsh {{ lookup('env', 'USER') }}"
+  tags: [zsh]
 
 # Dash to Dock
 - name: Configure Dash to Dock
