@@ -3,6 +3,6 @@
   hosts: all
   roles:
     # - base
-    # - customisation
       - dotfiles
+      - customisation
     # - security
