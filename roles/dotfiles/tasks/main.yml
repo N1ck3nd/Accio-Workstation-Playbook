@@ -47,3 +47,4 @@
     owner: "{{ lookup('env', 'USER') }}"
     group: "{{ lookup('env', 'USER') }}"
     mode: '0600'
+    recurse: yes
