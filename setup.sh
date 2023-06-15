@@ -27,15 +27,8 @@ chmod 600 $FILE
 
 eval "$(ssh-agent -s)"
 echo ''
-read -p "Enter SSH - Private Key Passphrase" $pass
-
-expect << EOF
-  spawn ssh-add $FILE
-  expect "Enter passphrase"
-  send "$pass\r"
-  expect eof
-EOF
-
+read -p "Enter SSH - Private Key Passphrase: " $pass
+DISPLAY=1 SSH_ASKPASS=$pass ssh-add $FILE
 echo ''
 ssh -T git@github.com
 
