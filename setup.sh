@@ -1,6 +1,6 @@
 #!/bin/bash
 cd $HOME
-REPO_NAME="https://github.com/N1ck3nd/Accio-Workstation-Playbook.git"
+REPO_URL="https://github.com/N1ck3nd/Accio-Workstation-Playbook.git"
 APT_PACKAGES="git curl python3 python3-pip"
 export ANSIBLE_FOLDER_PATH="$HOME/Accio-Workstation-Playbook"
 export PATH=$PATH:/$HOME/.local/bin
