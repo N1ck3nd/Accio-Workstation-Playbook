@@ -1,4 +1,5 @@
 #!/bin/bash
+cd $HOME
 REPO_NAME="https://github.com/N1ck3nd/Accio-Workstation-Playbook.git"
 APT_PACKAGES="git curl python3 python3-pip"
 export ANSIBLE_FOLDER_PATH="$HOME/Accio-Workstation-Playbook"
@@ -10,7 +11,7 @@ echo ''
 sudo apt-get update -y >/dev/null 2>&1
 sudo apt-get install $APT_PACKAGES -y >/dev/null 2>&1
 python3 -m pip install $PIP_DEPENDENCIES > /dev/null 2>&1
-git clone $REPO_URL $ANSIBLE_FOLDER_PATH >/dev/null 2>&1
+git clone $REPO_URL >/dev/null 2>&1
 
 echo ''
 echo 'PREPARE [Load GitHub SSH Key.] *********************************'
@@ -27,8 +28,8 @@ chmod 600 $FILE
 
 eval "$(ssh-agent -s)"
 echo ''
-read -p "Enter SSH - Private Key Passphrase: " $pass
-{ sleep .2; echo $pass; } | script -q /dev/null -c "ssh-add $FILE"
+sleep 2
+script -q /dev/null -c "ssh-add $FILE"
 echo ''
 ssh -T git@github.com
 
