@@ -1,2 +1,53 @@
 ---
 # defaults file for customisation
+dashtodock:
+  background-opacity: 
+    - "0.80000000000000004"
+  dash-max-icon-size:
+  - "48"
+  dock-fixed:
+  - "false"
+  dock-position:
+  - "'BOTTOM'"
+  extend-height: 
+  - "false"
+  height-fraction:
+  - "0.90000000000000002"
+  preferred-monitor:
+  - "-2"
+  preferred-monitor-by-connector:
+  - "'primary'"
+
+custom_gnome_terminal:
+  exec:
+  - "'/usr/bin/terminator'"
+  exec-arg:
+  - "'-x'"
+
+gnome_interface_theme:
+  color-scheme:
+  - "'prefer-dark'"                   
+  font-hinting:
+  - "'slight'"                              
+  gtk-theme:
+  - "'Yaru-red-dark'"                 
+  icon-theme:
+  - "'Yaru-red'"                   
+  show-battery-percentage:
+  - "true"
+
+custom_keybinding_terminal:
+  binding:
+  - "'<Super>t'"
+  command:
+  - "'bash /home/n/.config/terminator/term_shortcut.sh'"
+  name:
+  - "'Terminal'"
+
+custom_keybinding_flameshot:
+  binding:
+  - "'Print'"
+  command:
+  - "'flameshot gui'"
+  name:
+  - "'FlameShot'"
