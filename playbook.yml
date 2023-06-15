@@ -2,7 +2,7 @@
 - name: Install Workstation
   hosts: all
   roles:
-    # - base
-      - dotfiles
-      - customisation
-    # - security
+    - base
+    - dotfiles
+    - customisation
+    - security
