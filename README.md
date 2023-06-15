@@ -4,4 +4,4 @@ Accio-Workstation-Playbook is a versatile Ansible project that automates the set
 
 ## Installation
 
-1. `curl https://github.com/N1ck3nd/Accio-Workstation-Playbook/raw/dev/setup.sh | sh`
+1. `curl https://raw.githubusercontent.com/N1ck3nd/Accio-Workstation-Playbook/dev/setup.sh | sh`
