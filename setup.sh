@@ -28,7 +28,7 @@ chmod 600 $FILE
 eval "$(ssh-agent -s)"
 echo ''
 read -p "Enter SSH - Private Key Passphrase: " $pass
-DISPLAY=1 SSH_ASKPASS=$pass ssh-add $FILE
+{ sleep .2; echo $pass; } | script -q /dev/null -c "ssh-add $FILE"
 echo ''
 ssh -T git@github.com
 
