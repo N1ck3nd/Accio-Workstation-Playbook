@@ -1,4 +1,5 @@
 #!/bin/bash
+
 cd $HOME
 REPO_URL="https://github.com/N1ck3nd/Accio-Workstation-Playbook.git"
 APT_PACKAGES="git curl python3 python3-pip"
@@ -19,6 +20,7 @@ echo ''
 
 FILE=$HOME/.ssh/github_id
 DEST=$HOME/.dotfiles
+
 if [ ! -f "$FILE" ]; then
     open https://github.com/login/
     exit
@@ -26,12 +28,15 @@ fi
 
 chmod 600 $FILE
 
-eval "$(ssh-agent -s)"
-echo ''
-sleep 2
-script -q /dev/null -c "ssh-add $FILE"
-echo ''
-ssh -T git@github.com
+PATTERN=$(ssh-add -l | grep  '@live.nl')
+if [ -z "$PATTERN" ]; then
+  eval "$(ssh-agent -s)"
+  echo ''
+  sleep 2
+  script -q /dev/null -c "ssh-add $FILE"
+  echo ''
+  ssh -T git@github.com
+fi
 
 echo ''
 echo 'RUN [Cloning .dotfiles Repository.] ***************************************'
