@@ -23,6 +23,8 @@ if [ ! -f "$FILE" ]; then
     exit
 fi
 
+chmod 600 $DEST
+
 eval "$(ssh-agent -s)"
 echo ''
 ssh-add $FILE
