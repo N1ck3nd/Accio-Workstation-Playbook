@@ -14,6 +14,8 @@ sudo apt-get install $APT_PACKAGES -y >/dev/null 2>&1
 python3 -m pip install $PIP_DEPENDENCIES > /dev/null 2>&1
 git clone $REPO_URL >/dev/null 2>&1
 
+### BEGIN - OPTIONAL PRIVATE .dotfiles REPO
+
 echo ''
 echo 'PREPARE [Loading GitHub SSH Key.] *********************************'
 echo ''
@@ -28,7 +30,7 @@ fi
 
 chmod 600 $FILE
 
-PATTERN=$(ssh-add -l | grep  '@live.nl')
+PATTERN=$(ssh-add -l | grep '@live.nl')
 if [ -z "$PATTERN" ]; then
   eval "$(ssh-agent -s)"
   echo ''
@@ -43,6 +45,8 @@ echo 'RUN [Cloning .dotfiles Repository.] **************************************
 echo ''
 
 git clone git@github.com:N1ck3nd/.dotfiles.git $DEST
+
+### END - OPTIONAL
 
 sudo echo ''
 ## echo 'PREPARE [Installing requirements with Ansible-Galaxy.] ********'
