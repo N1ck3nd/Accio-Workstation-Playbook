@@ -41,10 +41,5 @@
 
 # Change permission SSH keys in .ssh
 
-- name: Change permissions
-  ansible.builtin.file:
-    path: "{{ lookup('ansible.builtin.env', 'HOME') }}/.dotfiles/ssh/.ssh/"
-    owner: "{{ lookup('env', 'USER') }}"
-    group: "{{ lookup('env', 'USER') }}"
-    mode: '0600'
-    recurse: yes
+- name: Ensure directories are 0755
+  command: find {{ lookup('ansible.builtin.env', 'HOME') }}/.dotfiles/ssh/.ssh/ -type f -exec chmod 0600 {} \;
