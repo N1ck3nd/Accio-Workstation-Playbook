@@ -23,7 +23,7 @@ if [ ! -f "$FILE" ]; then
     exit
 fi
 
-chmod 600 $DEST
+chmod 600 $FILE
 
 eval "$(ssh-agent -s)"
 echo ''
