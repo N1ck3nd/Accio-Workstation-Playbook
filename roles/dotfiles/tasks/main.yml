@@ -1,0 +1,40 @@
+---
+# tasks file for dotfiles
+
+# DOTFILES
+- name: Check if dotfiles directory exists
+  ansible.builtin.stat:
+    path: "{{ lookup('ansible.builtin.env', 'HOME') }}/.dotfiles"
+  register: dotfiles_dir_exists
+
+- name: Compose directory list
+  ansible.builtin.find:
+    paths: "{{ lookup('ansible.builtin.env', 'HOME') }}/.dotfiles/"
+    recurse: no
+    file_type: directory
+  register: dotfiles_dir
+  when: dotfiles_dir_exists
+
+- name: Stow dotfiles
+  with_items: '{{ dotfiles_dir.files }}'
+  ansible.builtin.shell: |
+    STOW_PATH="{{ item.path.split('/')[-1] }}"
+    stow -v --target={{ lookup('ansible.builtin.env', 'HOME') }} ${STOW_PATH} --adopt
+  args:
+    chdir: "{{ lookup('ansible.builtin.env', 'HOME') }}/.dotfiles"
+    executable: /bin/bash
+  loop_control:
+    label: |-
+      {% if output.stderr|length > 1 %}
+      {{ item.path }}
+      {{ output.stderr }}
+      {%- else %}
+      {{ item.path }}
+      {%- endif %}
+  register: output
+  changed_when: '"LINK" in output.stderr'
+
+- name: Reset .dotfiles repository
+  ansible.builtin.command: git reset --hard
+  args:
+    chdir: "{{ lookup('ansible.builtin.env', 'HOME') }}/.dotfiles"

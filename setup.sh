@@ -12,6 +12,29 @@ sudo apt-get install $APT_PACKAGES -y >/dev/null 2>&1
 python3 -m pip install $PIP_DEPENDENCIES > /dev/null 2>&1
 git clone $REPO_URL $ANSIBLE_FOLDER_PATH >/dev/null 2>&1
 
+echo ''
+echo 'PREPARE [Load GitHub SSH Key.] *********************************'
+echo ''
+
+FILE=$HOME/.ssh/github_id
+DEST=$HOME/.dotfiles
+if [ ! -f "$FILE" ]; then
+    open https://github.com/login/
+    exit
+fi
+
+eval "$(ssh-agent -s)"
+echo ''
+ssh-add $FILE
+echo ''
+ssh -T git@github.com
+
+echo ''
+echo 'RUN [Cloning .dotfiles Repository.] ***************************************'
+echo ''
+
+git clone git@github.com:N1ck3nd/.dotfiles.git $DEST
+
 sudo echo ''
 ## echo 'PREPARE [Installing requirements with Ansible-Galaxy.] ********'
 ## echo ''

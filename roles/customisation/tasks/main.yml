@@ -23,11 +23,11 @@
     force: true
 
 #SET DEFAULT SHELL TO ZSH
-- name: Set loginshell
-  become: true
-  # shell: "chsh -s /usr/bin/zsh vagrant"
-  shell: "chsh -s /usr/bin/zsh {{ lookup('env', 'USER') }}"
-  tags: [zsh]
+# - name: Set loginshell
+#   become: true
+#   # shell: "chsh -s /usr/bin/zsh vagrant"
+#   shell: "chsh -s /usr/bin/zsh {{ lookup('env', 'USER') }}"
+#   tags: [zsh]
 
 # Dash to Dock
 - name: Configure Dash to Dock
@@ -101,21 +101,6 @@
     key: "/org/gnome/desktop/background/picture-uri-dark"
     value: "'file:///usr/share/backgrounds/custom-wallpaper.jpg'"
     state: present
-
-# Dotfiles
-# Fix loop through .dotfiles directories
-- name: Check if dotfiles directory exists
-  ansible.builtin.stat:
-    path: "{{ lookup('ansible.builtin.env', 'HOME') }}/.dotfiles"
-  register: dotfiles_dir
-    
-# - name: Stow dotfiles
-#   ansible.builtin.command:
-#     cmd: "stow --target={{ lookup('ansible.builtin.env', 'HOME') }} */ --adopt --verbose=2"
-#     chdir: "{{ lookup('ansible.builtin.env', 'HOME') }}/.dotfiles"
-#   register: result
-#   when: dotfiles_dir.stat.exists
-
 
 
 # Extensions
