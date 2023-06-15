@@ -15,7 +15,7 @@ python3 -m pip install $PIP_DEPENDENCIES > /dev/null 2>&1
 git clone $REPO_URL >/dev/null 2>&1
 
 echo ''
-echo 'PREPARE [Load GitHub SSH Key.] *********************************'
+echo 'PREPARE [Loading GitHub SSH Key.] *********************************'
 echo ''
 
 FILE=$HOME/.ssh/github_id
