@@ -22,6 +22,18 @@
     dest: ~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting
     force: true
 
+- name: Install zsh-autoswitch-virtualenv plugin
+  ansible.builtin.git:
+    repo: https://github.com/MichaelAquilina/zsh-autoswitch-virtualenv.git
+    dest: ~/.oh-my-zsh/custom/plugins/autoswitch_virtualenv
+    force: true
+
+- name: Install zsh-fzf-history-search plugin
+  ansible.builtin.git:
+    repo: https://github.com/joshskidmore/zsh-fzf-history-search.git
+    dest: ~/.oh-my-zsh/custom/plugins/zsh-fzf-history-search
+    force: true
+
 #SET DEFAULT SHELL TO ZSH
 - name: Set loginshell
   become: true
