@@ -1,8 +1,42 @@
 ---
-- name: Install Workstation
+- name: Install Workstation - Custom roles
   hosts: all
   roles:
-    - base
-    - dotfiles
-    - customisation
-    - security
+    - role: base
+    - role: dotfiles
+    - role: customisation
+    - role: security
+
+- name: Install Workstation - Community roles
+  hosts: all
+  become: yes
+  roles:
+    - role: gantsign.visual-studio-code
+      users:
+        - username: "{{ lookup('env', 'USER') }}" 
+          visual_studio_code_extensions:
+            - silofy.hackthebox
+            - ritwickdey.liveserver
+            - redhat.vscode-yaml
+            - redhat.ansible
+            - ms-vscode.powershell
+            - ms-python.python
+            - ms-azuretools.vscode-docker
+            - yzhang.markdown-all-in-one
+            - shd101wyy.markdown-preview-enhanced
+            - snyk-security.snyk-vulnerability-scanner
+          visual_studio_code_settings_overwrite: yes
+          visual_studio_code_settings: {
+            "workbench.colorTheme": "Hack The Box",
+            "workbench.preferredDarkColorTheme": "Default Dark Modern",
+            "workbench.iconTheme": "vs-seti"
+          }
+    - role: robertdebock.bootstrap
+    - role: robertdebock.epel 
+    - role: robertdebock.buildtools
+    - role: robertdebock.python_pip
+    - role: robertdebock.core_dependencies
+    - role: robertdebock.docker_ce
+      docker_ce_privileged_users:
+      - "{{ lookup('env', 'USER') }}"
+    - role: robertdebock.docker_compose

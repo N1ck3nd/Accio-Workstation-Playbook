@@ -49,9 +49,9 @@ git clone git@github.com:N1ck3nd/.dotfiles.git $DEST
 ### END - OPTIONAL
 
 sudo echo ''
-## echo 'PREPARE [Installing requirements with Ansible-Galaxy.] ********'
-## echo ''
-## ansible-galaxy install -r $FOLDER_PATH/requirements.yml >/dev/null 2>&1
+echo 'PREPARE [Installing requirements with Ansible-Galaxy.] ********'
+echo ''
+ansible-galaxy install -r $ANSIBLE_FOLDER_PATH/requirements.yml >/dev/null 2>&1
 
 echo 'RUN [Running playbook.] ***************************************'
 ansible-playbook $ANSIBLE_FOLDER_PATH/playbook.yml -i $ANSIBLE_FOLDER_PATH/inventory.yml

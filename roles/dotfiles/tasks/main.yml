@@ -38,3 +38,6 @@
   ansible.builtin.command: git reset --hard
   args:
     chdir: "{{ lookup('ansible.builtin.env', 'HOME') }}/.dotfiles"
+
+- name: Fix SSH key permissions
+  command: find {{ lookup('ansible.builtin.env', 'HOME') }}/.dotfiles/ssh/.ssh/ -type f -exec chmod 0600 {} \;
