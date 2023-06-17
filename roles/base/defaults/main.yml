@@ -34,7 +34,8 @@ essential_apt_packages:
 - autotools-dev
 - ftp
 - net-tools
-# - plocate
+- fzf
+- plocate
 # - docker
 # - docker-compose
 
