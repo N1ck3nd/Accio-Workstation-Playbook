@@ -1,0 +1,9 @@
+---
+- src: gantsign.visual-studio-code
+- src: robertdebock.docker_ce
+- src: robertdebock.docker_compose
+- src: robertdebock.bootstrap
+- src: robertdebock.epel
+- src: robertdebock.buildtools
+- src: robertdebock.python_pip
+- src: robertdebock.core_dependencies
