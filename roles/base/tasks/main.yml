@@ -55,6 +55,28 @@
 
 # INSTALL OTHER APPLICATIONS
 
+# SPOTIFY
+- name: Add Spotify repository key.
+  become: true
+  ansible.builtin.get_url:
+    url: "https://download.spotify.com/debian/pubkey_7A3A762FAFD4A51F.gpg"
+    dest: /etc/apt/trusted.gpg.d/spotify.asc
+    mode: '0644'
+    force: false
+
+- name: Add Spotify repository to apt sources
+  become: true
+  ansible.builtin.apt_repository:
+    repo: "deb http://repository.spotify.com stable non-free"
+    state: present
+    update_cache: true
+
+- name: Install Spotify
+  become: true
+  ansible.builtin.apt:
+    name: spotify-client
+    state: present
+
 # ULAUNCHER
 - name: Get Ulauncher latest tag
   community.general.github_release:
