@@ -1,0 +1,62 @@
+---
+# tasks file for tools
+
+# Kali Rolling
+- name: Add Kali repository repository key
+  become: true
+  ansible.builtin.get_url:
+    url: "https://archive.kali.org/archive-key.asc"
+    dest: /etc/apt/trusted.gpg.d/kali_key.asc
+    mode: '0644'
+    force: false
+
+- name: Add Kali repository to apt sources
+  become: true
+  ansible.builtin.apt_repository:
+    repo: "deb https://http.kali.org/kali kali-rolling main non-free contrib"
+    state: present
+    update_cache: true
+
+- name: Create kali preferences file
+  become: true
+  ansible.builtin.file:
+    path: "/etc/apt/preferences.d/kali.pref"
+    state: touch
+    mode: '0644'
+
+- name: Creating a file with content
+  become: true
+  ansible.builtin.copy:
+    dest: "/etc/apt/preferences.d/kali.pref"
+    content: |
+      Package: *
+      Pin: release a=kali-rolling
+      Pin-Priority: 50
+      [i] Install completed. Use kali-list.sh to install kali packages
+
+# PYTHON
+
+- Name: Install pipx is installed
+  become: true
+  ansible.builtin.apt:
+    name: pipx
+    state: present
+
+- name: Install Hacking tools using pipx
+  community.general.pipx:
+    name: "{{ item }}"
+    state: present
+  with_items: "{{ hacking_general_pipx_packages }}"
+
+- name: Install Hacking tools using pipx
+  community.general.pipx:
+    name: "{{ item }}"
+    state: present
+  with_items: "{{ hacking_windows_pipx_packages }}"
+
+- name: Inject pycryptodome into venvs
+  community.general.pipx:
+    name: "{{ item }}"
+    state: inject
+    inject_packages: pycryptodome
+  with_items: "{{ hacking_windows_pipx_packages }}"

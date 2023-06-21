@@ -10,24 +10,3 @@
   become: true
   community.general.ufw:
     state: enabled
-
-
-# //TODO: Check if pipx is installed
-# - name: Install Hacking tools using pipx
-#   community.general.pipx:
-#     name: "{{ item }}"
-#     state: present
-#   with_items: "{{ hacking_general_pipx_packages }}"
-
-# - name: Install Hacking tools using pipx
-#   community.general.pipx:
-#     name: "{{ item }}"
-#     state: present
-#   with_items: "{{ hacking_windows_pipx_packages }}"
-
-# - name: Inject pycryptodome into venvs
-#   community.general.pipx:
-#     name: "{{ item }}"
-#     state: inject
-#     inject_packages: pycryptodome
-#   with_items: "{{ hacking_windows_pipx_packages }}"

@@ -1,0 +1,38 @@
+---
+# defaults file for tools
+security_apt_packages:
+- bettercap
+- aircrack-ng
+- iw
+- arp-scan
+- cewl
+- gdb
+- hashcat
+- hcxtools
+- hcxdumptool
+- macchanger
+- hydra
+- proxychains
+- hping3
+- sqlite3
+- sqlmap
+- ike-scan
+- xtigervncviewer
+- dos2unix
+- swaks
+
+hacking_general_pipx_packages:
+- checkdmarc
+- shcheck
+- cipherchecks
+- wafw00f
+- sshuttle
+- crosslinked
+- sublist3r
+- certipy
+- roadrecon
+
+hacking_windows_pipx_packages:
+- impacket
+- ldapdomaindump
+- bloodhound
