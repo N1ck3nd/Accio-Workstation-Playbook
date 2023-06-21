@@ -2,6 +2,7 @@
 - name: Install Workstation - Custom roles
   hosts: all
   roles:
+    - role: tools
     - role: base
     - role: dotfiles
     - role: customisation

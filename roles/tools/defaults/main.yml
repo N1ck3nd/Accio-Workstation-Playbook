@@ -1,6 +1,8 @@
 ---
 # defaults file for tools
 security_apt_packages:
+- yubikey-manager-qt
+- yubikey-personalization-gui
 - bettercap
 - aircrack-ng
 - iw
@@ -17,9 +19,19 @@ security_apt_packages:
 - sqlite3
 - sqlmap
 - ike-scan
-- xtigervncviewer
+# - xtigervncviewer
 - dos2unix
+#kali_security_apt_packages
 - swaks
+- seclists
+- feroxbuster
+- kerberoast
+- responder
+# - wpscan
+- evil-winrm
+- gobuster
+- wordlists
+- bloodhound
 
 hacking_general_pipx_packages:
 - checkdmarc
@@ -31,6 +43,7 @@ hacking_general_pipx_packages:
 - sublist3r
 - certipy
 - roadrecon
+- crackmapexec
 
 hacking_windows_pipx_packages:
 - impacket

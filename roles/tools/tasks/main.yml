@@ -32,11 +32,16 @@
       Package: *
       Pin: release a=kali-rolling
       Pin-Priority: 50
-      [i] Install completed. Use kali-list.sh to install kali packages
+
+- name: Install APT packages
+  become: true
+  ansible.builtin.apt:
+    name: "{{ item }}"
+    state: present
+  with_items: "{{ security_apt_packages }}"
 
 # PYTHON
-
-- Name: Install pipx is installed
+- name: Install pipx is installed
   become: true
   ansible.builtin.apt:
     name: pipx
@@ -48,7 +53,7 @@
     state: present
   with_items: "{{ hacking_general_pipx_packages }}"
 
-- name: Install Hacking tools using pipx
+- name: Install more Hacking tools using pipx
   community.general.pipx:
     name: "{{ item }}"
     state: present
